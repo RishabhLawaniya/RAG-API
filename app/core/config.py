@@ -9,6 +9,10 @@ class Settings(BaseSettings):
     REDIS_URL: str = "redis://localhost:6379/0"
     GROQ_API_KEY: str = ""
 
+    db_username: str
+    db_password: str
+    db_host: str
+
     class Config:
         env_file = ".env"
 
