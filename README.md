@@ -96,8 +96,11 @@ celery -A app.core.celery_app worker --loglevel=info --pool=solo
 
 ### Upload a document
 ```bash
-curl -X POST http://localhost:8000/api/v1/documents \
-  -F "file=@document.pdf"
+curl -X POST http://localhost:8000/api/v1/documents -F "file=@document.pdf"
+
+for eg.
+
+curl -X POST http://localhost:8000/api/v1/documents -F "file=@C:\Users\Rishabh\Downloads\xyz.pdf"
 ```
 
 ### Ask a question
