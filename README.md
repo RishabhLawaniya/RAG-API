@@ -105,6 +105,12 @@ curl -X POST http://localhost:8000/api/v1/documents -F "file=@C:\Users\Rishabh\D
 
 ### Ask a question
 ```bash
-curl -X POST http://localhost:8000/api/v1/query \
-  -H "Content-Type: application/json" \
+curl -X POST http://localhost:8000/api/v1/query ^
+  -H "Content-Type: application/json" ^
   -d '{"question": "What is the educational background?", "document_ids": ["your-doc-id"]}'
+
+for eg.
+
+curl -X POST http://localhost:8000/api/v1/query ^
+-H "Content-Type: application/json" ^
+-d "{\"question\": \"What is the educational background?\", \"document_ids\": [\"f72dc7bd-26da-4d95-88a4-1ecff96f898b\"]}"
