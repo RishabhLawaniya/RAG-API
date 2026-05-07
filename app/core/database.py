@@ -10,9 +10,9 @@ def build_engine():
     # Build URL programmatically — password is passed as plain text, no encoding needed
     url = URL.create(
         drivername="postgresql+psycopg2",
-        username="postgres",
-        password="Rishabh@2401",          # plain password, no %40
-        host="db.zaagdlnecpymghccgscj.supabase.co",
+        username="",
+        password="",          # plain password, no %40
+        host="",
         port=5432,
         database="postgres"
     )
