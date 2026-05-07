@@ -1,116 +1,101 @@
-# RAG Document Q&A API
+# 📌 RAG Document Q&A API
 
-A production-grade Retrieval-Augmented Generation (RAG) API that allows users to upload PDF documents and ask questions about them using semantic search and LLM.
+A scalable backend system that enables users to upload PDF documents and query them using semantic search and LLM-powered responses.
 
-## Tech Stack
+🚀 Key Features
 
-| Component | Technology |
-|---|---|
-| API Framework | FastAPI |
-| Database | PostgreSQL + pgvector (Supabase) |
-| ORM + Migrations | SQLAlchemy + Alembic |
-| Task Queue | Celery + Redis |
-| PDF Parsing | PyMuPDF |
-| Text Chunking | LangChain text splitters |
-| Embeddings | sentence-transformers (local) |
-| Vector Search | pgvector cosine similarity |
-| LLM | Llama 3 via Groq |
-| Deployment | Docker + docker-compose |
+-> Asynchronous document processing using Celery + Redis
 
-## Architecture
+-> PDF parsing, chunking, and embedding pipeline
 
-PDF Upload → Celery Worker → PDF Parsing → Chunking → Embeddings → pgvector
-↓
-User Query → Embed Question → Cosine Similarity Search → Top Chunks → LLM → Answer
+-> Semantic search using pgvector (PostgreSQL)
 
-## Features
+-> Context-aware answers using LLM (Llama 3 via Groq)
 
-- Async PDF upload and processing via Celery
-- Semantic search using vector embeddings
-- Natural language answers with source attribution
-- Task status tracking
-- Auto-generated Swagger docs at `/docs`
+-> REST APIs with FastAPI and auto Swagger docs (/docs)
 
-## API Endpoints
+# 🏗️ Architecture Overview
 
-| Method | Endpoint | Description |
-|---|---|---|
-| POST | `/api/v1/documents` | Upload PDF document |
-| GET | `/api/v1/documents/{id}/status` | Check processing status |
-| GET | `/api/v1/documents` | List all documents |
-| POST | `/api/v1/query` | Ask a question |
-| GET | `/api/v1/tasks/{task_id}` | Check Celery task status |
-| GET | `/api/v1/health` | Health check |
+PDF Upload → FastAPI → Celery → Redis → Worker
+                                ↓
+                        PDF Parsing → Chunking → Embeddings → PostgreSQL (pgvector)
 
-## Setup
+User Query → Embed Query → Vector Search → Top Chunks → LLM → Answer
 
-### Prerequisites
-- Python 3.11+
-- PostgreSQL with pgvector extension
-- Redis
 
-### Installation
+# 🛠️ Tech Stack
 
-```bash
-# Clone the repo
+1. Backend: FastAPI
+2. Database: PostgreSQL + pgvector
+3. Queue: Celery + Redis
+4. ORM: SQLAlchemy + Alembic
+5. Embeddings: sentence-transformers
+6. LLM: Llama 3 (via Groq)
+
+## ⚙️ Local Setup (Step-by-Step)
+
+1. Clone repository
 git clone https://github.com/YOUR_USERNAME/rag-api.git
 cd rag-api
-
-# Create virtual environment
+2. Create virtual environment
 python -m venv venv
-venv\Scripts\activate  # Windows
+venv\Scripts\activate   # Windows
+OR
 source venv/bin/activate  # Mac/Linux
-
-# Install dependencies
+3. Install dependencies
 pip install -r requirements.txt
-```
+4. Setup environment variables
 
-### Environment Variables
+* Create a .env file:
 
-Create a `.env` file:
+* DATABASE_URL=
 
-```env
-DATABASE_URL=your_database_url
-SYNC_DATABASE_URL=your_sync_database_url
-REDIS_URL=redis://localhost:6379/0
-GROQ_API_KEY=your_groq_key
-```
+* SYNC_DATABASE_URL=
 
-### Run with Docker
+* REDIS_URL=redis://localhost:6379/0
 
-```bash
+* GROQ_API_KEY=
+
+5. Start services
+Option A: Using Docker (recommended)
 docker-compose up --build
-```
 
-### Run manually
+## Manual setup
 
-```bash
-# Terminal 1 - API
+### Terminal 1:
+
 uvicorn app.main:app --reload
 
-# Terminal 2 - Celery worker
+### Terminal 2:
+
 celery -A app.core.celery_app worker --loglevel=info --pool=solo
-```
 
-## Example Usage
+## 📡 API Usage
 
-### Upload a document
-```bash
-curl -X POST http://localhost:8000/api/v1/documents -F "file=@document.pdf"
+Upload PDF
+curl -X POST http://localhost:8000/api/v1/documents \
+-F "file=@document.pdf"
 
-for eg.
+Query document
+curl -X POST http://localhost:8000/api/v1/query \
+-H "Content-Type: application/json" \
+-d '{"question": "Your question", "document_ids": ["<doc-id>"]}'
 
-curl -X POST http://localhost:8000/api/v1/documents -F "file=@C:\Users\Rishabh\Downloads\xyz.pdf"
-```
+📊 Example Flow
 
-### Ask a question
-```bash
-curl -X POST http://localhost:8000/api/v1/query ^
-  -H "Content-Type: application/json" ^
-  -d '{"question": "What is the educational background?", "document_ids": ["your-doc-id"]}'
+1. Upload a PDF
+2. Background worker processes it (chunking + embeddings)
+3. Ask a question
+4. System retrieves relevant chunks
+5. LLM generates contextual answer
+   
+🧠 Key Learnings
+Designing async pipelines using Celery
+Managing background job retries and failures
+Implementing vector search using pgvector
+Integrating LLMs for contextual responses
+🔗 API Docs
 
-for eg.
+Swagger UI available at:
 
-curl -X POST http://localhost:8000/api/v1/query ^
--H "Content-Type: application/json" ^
--d "{\"question\": \"What is the educational background?\", \"document_ids\": [\"f72dc7bd-26da-4d95-88a4-1ecff96f898b\"]}"
+http://localhost:8000/docs
