@@ -4,17 +4,12 @@ from sqlalchemy.engine import URL
 from sqlalchemy.orm import sessionmaker, DeclarativeBase
 from app.core.config import settings
 
-# Parse the SYNC_DATABASE_URL to extract components
-# Then rebuild it properly so %40 in password is handled correctly
 def build_engine():
-    # Build URL programmatically — password is passed as plain text, no encoding needed
-    url = URL.create(
-        drivername="postgresql+psycopg2",
-        username="",
-        password="",          # plain password, no %40
-        host="",
-        port=5432,
-        database="postgres"
+    return create_engine(
+        settings.SYNC_DATABASE_URL,
+        pool_size=5,
+        max_overflow=10,
+        pool_pre_ping=True
     )
     return create_engine(url, pool_size=5, max_overflow=10, pool_pre_ping=True)
 
