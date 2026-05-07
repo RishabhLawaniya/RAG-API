@@ -10,9 +10,9 @@ from app.services.embedding_service import create_embeddings
 def get_worker_db():
     url = URL.create(
         drivername="postgresql+psycopg2",
-        username="postgres",
-        password="Rishabh@2401",
-        host="db.zaagdlnecpymghccgscj.supabase.co",
+        username="",
+        password="",
+        host="",
         port=5432,
         database="postgres"
     )
