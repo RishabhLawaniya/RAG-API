@@ -5,6 +5,7 @@ from fastapi import UploadFile, HTTPException
 
 # Where uploaded files will be stored
 UPLOAD_DIR = "uploads"
+os.makedirs(UPLOAD_DIR, exist_ok=True) 
 MAX_FILE_SIZE = 10 * 1024 * 1024  # 10 MB in bytes
 ALLOWED_TYPES = ["application/pdf"]
 

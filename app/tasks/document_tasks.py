@@ -1,4 +1,4 @@
-from celery import shared_task
+from app.core.celery_app import celery_app
 from sqlalchemy.engine import URL
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -21,7 +21,7 @@ def get_worker_db():
     return SessionLocal()
 
 
-@shared_task(
+@celery_app.task(
     bind=True,
     name="process_document",
     max_retries=3,

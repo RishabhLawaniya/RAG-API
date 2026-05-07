@@ -4,6 +4,8 @@ import os
 # Use environment variable — defaults to localhost for dev
 REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")
 
+print("REDIS_URL:", REDIS_URL)
+
 celery_app = Celery(
     "rag_worker",
     broker=REDIS_URL,
