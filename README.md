@@ -2,7 +2,7 @@
 
 A scalable backend system that enables users to upload PDF documents and query them using semantic search and LLM-powered responses.
 
-🚀 Key Features
+🚀 Key Features:
 
 -> Asynchronous document processing using Celery + Redis
 
